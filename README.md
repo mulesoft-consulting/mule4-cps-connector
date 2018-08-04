@@ -25,3 +25,4 @@ Then add the Global Configuration-property-service Config element to your projec
 		clientSecret="x" configId="cps-config" />
 
 ```
+The CPS REST service project can be found [here](https://github.com/mulesoft-consulting/mule4-cps-rest-service):
