@@ -1,0 +1,21 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cps="http://www.mulesoft.org/schema/mule/cps"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/cps http://www.mulesoft.org/schema/mule/cps/current/mule-cps.xsd">
+
+	<cps:config name="config" configId="configId"
+		configServerBaseUrl="https://myhost:9084/configuration-property-service/v1/config"
+		projectName="project" branchName="branch" instanceId="base" envName="TEST"
+		keyId="base" clientId="xxx" clientSecret="xxx">
+		<cps:connection requiredParameter="aValue" />
+	</cps:config>
+
+	<flow name="getConfig">
+		<cps:get-config config-ref="config" />
+	</flow>
+
+	<flow name="retrieveInfoFlow">
+		<cps:retrieve-info config-ref="config" />
+	</flow>
+
+</mule>
