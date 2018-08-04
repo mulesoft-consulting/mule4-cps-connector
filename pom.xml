@@ -120,7 +120,7 @@
 
 		<dependency>
 			<groupId>org.mule.consulting</groupId>
-			<artifactId>cps-encryption</artifactId>
+			<artifactId>mule4-cps-encryption</artifactId>
 			<version>1.1.0</version>
 		</dependency>
 	</dependencies>

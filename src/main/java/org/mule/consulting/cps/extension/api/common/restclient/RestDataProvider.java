@@ -14,10 +14,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.internal.util.Base64;
+import org.mule.consulting.cps.encryption.CpsEncryptor;
 import org.mule.consulting.cps.extension.api.common.ApplicationConfiguration;
 import org.mule.consulting.cps.extension.api.common.ApplicationConfigurationBuilder;
 import org.mule.consulting.cps.extension.api.common.ApplicationDataProvider;
-import org.mule.consulting.cps.extension.api.error.ConfigurationNotFoundException;
 import org.mule.consulting.cps.extension.api.error.ConfigurationsUnavailableException;
 import org.mule.consulting.cps.extension.api.error.CpsException;
 import org.mule.consulting.cps.extension.api.error.UnretryableConnectionException;
@@ -188,6 +188,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 			logger.warn("No configuration property server configured.");
 		}
 
+		decryptProperties(result);
 		return result;
 
 	}
@@ -269,4 +270,35 @@ public class RestDataProvider implements ApplicationDataProvider {
         return is;
 
     }
+
+	private void decryptProperties(Map<String, Object> payload) {
+
+		String keyId = (String) payload.get("keyId");
+		String cipherKey = (String) payload.get("cipherKey");
+		if (keyId == null || keyId.isEmpty()) {
+			String msg = "Need a keyId to be specified in the configuration file, cannot continue with decrypt";
+			logger.error(msg);
+			return;
+		}
+
+		if (cipherKey == null || cipherKey.isEmpty()) {
+			String msg = "No cipherKey is specified in the configuration file, nothing to decrypt";
+			logger.info(msg);
+			return;
+		}
+
+		Map<String, String> properties = (Map<String, String>) payload.get("properties");
+		try {
+			CpsEncryptor cpsEncryptor = new CpsEncryptor(keyId, cipherKey);
+			for (String key : properties.keySet()) {
+				String encryptedValue = properties.get(key);
+				String value = cpsEncryptor.decrypt(encryptedValue);
+				properties.put(key, value);
+			}
+		} catch (Exception e) {
+			logger.error("Decryption of properties failed");
+			e.printStackTrace();
+			return;
+		}
+	}
 }
