@@ -98,8 +98,8 @@ public class ApplicationConfiguration implements Serializable {
 
 	public String readProperty(String keyOrDefault) {
 
-		logger.info("properties: " + properties);
-		logger.info("Call to read key {}", keyOrDefault);
+		logger.debug("properties: " + properties);
+		logger.debug("Call to read key {}", keyOrDefault);
 		
 		String[] keyOrDefaultx = keyOrDefault.split(":",2);
 		String key = keyOrDefaultx[0];
@@ -108,7 +108,7 @@ public class ApplicationConfiguration implements Serializable {
 
 		// try with this one
 		prop = properties.get(key);
-		logger.info("properties: " + prop);
+		logger.debug("properties: " + prop);
 		if (prop != null) {
 			return prop;
 		}
@@ -122,13 +122,13 @@ public class ApplicationConfiguration implements Serializable {
 		}
 		
 		prop = bootProperties.getProperty(key);
-		logger.info("bootProperties: " + prop);
+		logger.debug("bootProperties: " + prop);
 		if (prop != null) {
 			return prop;
 		}
 
 		if (keyOrDefault.contains(":")) {
-			logger.info("using default value");
+			logger.debug("using default value");
 			return keyOrDefaultx[1];
 		}
 		

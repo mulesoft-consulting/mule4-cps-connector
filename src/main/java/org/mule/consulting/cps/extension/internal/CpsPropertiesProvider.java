@@ -20,15 +20,15 @@ public class CpsPropertiesProvider implements ConfigurationPropertiesProvider {
         this.config = config;
         this.serverBaseUrl = serverBaseUrl;
     	
-    	logger.info("Enter cpsPropertiesProvider constructor");
-    	logger.info(getDescription());
+    	logger.debug("Enter cpsPropertiesProvider constructor");
+    	logger.debug(getDescription());
     }
 
     @Override
     public Optional<ConfigurationProperty> getConfigurationProperty(String configurationAttributeKey) {
     	
-    	logger.info("Enter getConfigurationProperty for: " + configurationAttributeKey);
-    	logger.info(getDescription());
+    	logger.debug("Enter getConfigurationProperty for: " + configurationAttributeKey);
+    	logger.debug(getDescription());
 
         String value = config.readProperty(configurationAttributeKey);
 

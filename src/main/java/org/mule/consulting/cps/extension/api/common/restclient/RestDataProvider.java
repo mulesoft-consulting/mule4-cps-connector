@@ -283,17 +283,28 @@ public class RestDataProvider implements ApplicationDataProvider {
 
 		if (cipherKey == null || cipherKey.isEmpty()) {
 			String msg = "No cipherKey is specified in the configuration file, nothing to decrypt";
-			logger.info(msg);
+			logger.debug(msg);
 			return;
 		}
 
 		Map<String, String> properties = (Map<String, String>) payload.get("properties");
+		boolean decryptRequired = false;
+		for (String key : properties.keySet()) {
+			String encryptedValue = properties.get(key);
+			if (encryptedValue != null && encryptedValue.startsWith("![")) {
+				decryptRequired = true;
+				break;
+			}
+		}
+
 		try {
-			CpsEncryptor cpsEncryptor = new CpsEncryptor(keyId, cipherKey);
-			for (String key : properties.keySet()) {
-				String encryptedValue = properties.get(key);
-				String value = cpsEncryptor.decrypt(encryptedValue);
-				properties.put(key, value);
+			if (decryptRequired) {
+				CpsEncryptor cpsEncryptor = new CpsEncryptor(keyId, cipherKey);
+				for (String key : properties.keySet()) {
+					String encryptedValue = properties.get(key);
+					String value = cpsEncryptor.decrypt(encryptedValue);
+					properties.put(key, value);
+				}
 			}
 		} catch (Exception e) {
 			logger.error("Decryption of properties failed");
