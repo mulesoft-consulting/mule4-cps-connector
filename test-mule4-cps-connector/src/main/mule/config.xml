@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:cps="http://www.mulesoft.org/schema/mule/cps"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/cps http://www.mulesoft.org/schema/mule/cps/current/mule-cps.xsd">
+
+	<cps:config name="Configuration_properties_service_Config"
+		doc:name="Configuration-properties-service Config" doc:id="b994fefb-59ee-48f9-aa88-c9cc40b4c0b8"
+		configServerBaseUrl="http://localhost:9184/configuration-property-service/v1/config"
+		insecure="true" projectName="test-mule4-cps-connector" branchName="base"
+		instanceId="base" envName="${mule.env}" keyId="key1" clientId="x"
+		clientSecret="x" configId="cps-config" />
+
+	<http:listener-config name="api-httpListenerConfig"
+		doc:description="This is not used if a shared domain is configured in the listener..in that case remove this config to prevent this port from showing in the server's port scan."
+		doc:name="HTTP Listener config">
+		<http:listener-connection host="0.0.0.0"
+			port="${http.port:8081}" />
+	</http:listener-config>
+
+</mule>

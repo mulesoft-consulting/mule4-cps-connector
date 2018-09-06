@@ -1,0 +1,160 @@
+{
+    "configs": [
+        {
+            "imports": [
+                {
+                    "projectName": "Globals",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "base",
+                    "envName": "QA"
+                },
+                {
+                    "projectName": "Shared",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "keyTwo",
+                    "envName": "QA"
+                }
+            ],
+            "properties": {
+                "a.b.c": "myvalue",
+                "my.second.property": "another value",
+                "another.property": "Third value, why not?",
+                "cipher.text.properties": "base64 encoded cipher text"
+            },
+           "projectName": "base",
+            "branchName": "base",
+            "instanceId": "base",
+            "envName": "base",
+            "keyId": "base"
+        },
+        {
+            "projectName": "Globals",
+            "branchName": "base",
+            "instanceId": "base",
+            "keyId": "base",
+            "envName": "QA",
+            "properties": {
+                "global.one": "myvalue",
+                "global.two": "another value",
+                "another.global.property": "Third value, why not?"
+            }
+        },
+        {
+            "projectName": "Globals",
+            "branchName": "base",
+            "instanceId": "base",
+            "keyId": "base",
+            "envName": "DEV",
+            "properties": {
+                "global.one": "global DEV",
+                "global.two": "another value",
+                "another.global.property": "Third value, why not?"
+            }
+        },
+        {
+            "projectName": "test-mule4-cps-connector",
+            "branchName": "base",
+            "instanceId": "base",
+            "keyId": "base",
+            "envName": "DEV",
+            "imports": [
+                {
+                    "projectName": "Shared",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "base",
+                    "envName": "DEV"
+                }
+            ],
+            "properties": {
+                "a.b.c": "myvalue",
+                "my.second.property": "test-mule4-cps-connector base base DEV base",
+                "another.property": "Third value, why not?",
+                "cipher.text.properties": "base64 encoded cipher text"
+            }
+        },
+        {
+            "projectName": "test-mule4-cps-connector",
+            "branchName": "base",
+            "instanceId": "base",
+            "keyId": "key1",
+            "envName": "DEV",
+            "imports": [
+                {
+                    "projectName": "Shared",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "base",
+                    "envName": "DEV"
+                }
+            ],
+            "properties": {
+                "a.b.c": "myvalue",
+                "my.second.property": "test-mule4-cps-connector base base DEV key1",
+                "another.property": "Third value, why not?",
+                "cipher.text.properties": "base64 encoded cipher text"
+            }
+        },
+        {
+            "projectName": "a-test",
+            "branchName": "master",
+            "instanceId": "01",
+            "keyId": "keyOne",
+            "envName": "QA",
+            "imports": [
+                {
+                    "projectName": "Globals",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "base",
+                    "envName": "QA"
+                },
+                {
+                    "projectName": "Shared",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "keyTwo",
+                    "envName": "QA"
+                }
+            ],
+            "properties": {
+                "a.b.c": "myvalue",
+                "my.second.property": "another value",
+                "another.property": "Third value, why not?",
+                "cipher.text.properties": "base64 encoded cipher text"
+            }
+        },
+        {
+            "projectName": "Shared",
+            "branchName": "base",
+            "instanceId": "base",
+            "keyId": "base",
+            "envName": "DEV",
+            "imports": [
+                {
+                    "projectName": "Globals",
+                    "branchName": "base",
+                    "instanceId": "base",
+                    "keyId": "base",
+                    "envName": "DEV"
+                }
+            ],
+            "properties": {
+                "cipher.text.properties": "base64 encoded cipher text",
+                "parentage": "DEV Shared base base base"
+            }
+        },
+        {
+            "projectName": "Shared",
+            "branchName": "base",
+            "instanceId": "base",
+            "keyId": "keyTwo",
+            "envName": "QA",
+            "properties": {
+                "cipher.text.properties": "base64 encoded cipher text"
+            }
+        }
+    ]
+}
