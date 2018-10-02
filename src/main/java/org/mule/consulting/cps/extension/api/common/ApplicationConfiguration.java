@@ -18,6 +18,7 @@ public class ApplicationConfiguration implements Serializable {
 	private String envName;
 	private String keyId;
 	private Properties bootProperties = new Properties();
+	private Properties projectFileProperties = new Properties();
 	private final Map<String, String> properties;
 	private final List<ApplicationConfiguration> imports;
 	private final ConfigurationDataWrapper dataWrapper;
@@ -47,6 +48,25 @@ public class ApplicationConfiguration implements Serializable {
 				bootProperties.load(input);
 			} else {
 				logger.info("cps-boot.properties is null");
+			}
+		} catch (IOException ex) {
+			logger.warn(ex.getMessage());
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					logger.error(e.getMessage());
+				}
+			}
+		}
+		String projectPropertyFileName = envName.toUpperCase() + "-config.properties";
+		try {
+			input = loadClasspathResource(projectPropertyFileName);
+			if (input != null) {
+				projectFileProperties.load(input);
+			} else {
+				logger.info(projectPropertyFileName + " is null");
 			}
 		} catch (IOException ex) {
 			logger.warn(ex.getMessage());
@@ -98,6 +118,7 @@ public class ApplicationConfiguration implements Serializable {
 
 	public String readProperty(String keyOrDefault) {
 
+		logger.debug("project properties: " + projectFileProperties);
 		logger.debug("properties: " + properties);
 		logger.debug("Call to read key {}", keyOrDefault);
 		
@@ -105,11 +126,17 @@ public class ApplicationConfiguration implements Serializable {
 		String key = keyOrDefaultx[0];
 
 		String prop = null;
+		
+		prop = projectFileProperties.getProperty(key);
+		if (prop != null) {
+			logger.debug("project file property: " + prop);
+			return prop;
+		}
 
 		// try with this one
 		prop = properties.get(key);
-		logger.debug("properties: " + prop);
 		if (prop != null) {
+			logger.debug("config property: " + prop);
 			return prop;
 		}
 
