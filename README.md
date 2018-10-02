@@ -25,11 +25,7 @@ Then add the Global Configuration-property-service Config element to your projec
 		clientSecret="x" configId="cps-config" />
 
 ```
-All properties defined in the configuration server's repository for the application, profiles and labels will be available in the application in the form of placeholders. In addition to loading properties
-from the configuration property service, a set of initial startup properties can be provided in the file
-/src/main/resources-filtered/cps-boot.properties. This file is used to bridge between the properties specified in the
-Maven build into the deployed application. The maven filtered function is used to replace property statements
-in the cps-boot.properties file with the Maven values. Note that if maven filtering is not used, the file can be stored as /src/main/resources/cps-boot.properties.
+All properties defined in the configuration server's repository for the application, profiles and labels will be available in the application in the form of placeholders. 
 
 This connector loads the properties as part of its initialization
 state functions.
