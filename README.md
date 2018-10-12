@@ -66,3 +66,7 @@ Note for CloudHub, place the keystore in the src/main/resources directory and sp
 
 ##Associated REST Service Project
 The CPS REST service project can be found [here](https://github.com/mulesoft-consulting/mule4-cps-rest-service):
+
+## Invalid Key Size Error During Encryption or Decryption
+
+This error will occur if the Java Cryptography Extension (JCE) Unlimited Strength is not installed in your Java JRE (lib/security) directory. Do an Internet search to find where to download this set of libraries.
