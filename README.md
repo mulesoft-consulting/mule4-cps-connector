@@ -70,3 +70,7 @@ The CPS REST service project can be found [here](https://github.com/mulesoft-con
 ## Invalid Key Size Error During Encryption or Decryption
 
 This error will occur if the Java Cryptography Extension (JCE) Unlimited Strength is not installed in your Java JRE (lib/security) directory. Do an Internet search to find where to download this set of libraries.
+
+## Versions
+
+1.0.3 peter dunworth -Add additional headers into call to cps rest service, allows calls to RTF deployed cps

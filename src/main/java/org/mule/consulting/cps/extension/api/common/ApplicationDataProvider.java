@@ -15,8 +15,6 @@ public interface ApplicationDataProvider {
      */
     static ApplicationDataProviderFactory factory = new ApplicationDataProviderFactory();
 
-    Map<String, Object> loadApplication(String projectName, String branchName, String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders) throws CpsException;
-
     /**
      * Load the model for application configuration.
      * @param name
@@ -25,5 +23,9 @@ public interface ApplicationDataProvider {
      * @return
      * @throws ConfigurationServiceException
      */
-    ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName, String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders) throws CpsException;
+    ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName, String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException;
+
+	Map<String, Object> loadApplication(String projectName, String branchName, String instanceId, String envName,
+			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders,
+			Map<String, String> additionalHeaders) throws CpsException;
 }

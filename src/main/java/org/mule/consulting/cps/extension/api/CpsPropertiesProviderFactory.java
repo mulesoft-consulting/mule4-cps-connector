@@ -31,13 +31,13 @@ public class CpsPropertiesProviderFactory implements ConfigurationPropertiesProv
     public static final ComponentIdentifier HEADERS_IDENTIFIER =
             ComponentIdentifier.builder()
                     .namespace("cps")
-                    .name("custom-headers")
+                    .name("additional-headers")
                     .build();
 
     public static final ComponentIdentifier HEADER_IDENTIFIER =
             ComponentIdentifier.builder()
                     .namespace("cps")
-                    .name("custom-header")
+                    .name("additional-header")
                     .build();
 
     @Override
@@ -67,7 +67,6 @@ public class CpsPropertiesProviderFactory implements ConfigurationPropertiesProv
 
             //this could be just one
             Optional<ConfigurationParameters> headersParam = headerConfigs.stream().findAny();
-
             if (headersParam.isPresent()) {
                 List<ConfigurationParameters> headersParams = headersParam.get().getComplexConfigurationParameter(HEADER_IDENTIFIER);
                 headersParams.forEach(hp -> {
@@ -106,7 +105,7 @@ public class CpsPropertiesProviderFactory implements ConfigurationPropertiesProv
 
             ApplicationConfiguration appConfig = provider.loadApplicationConfiguration(config.getProjectName(),config.getBranchName(),
             		config.getInstanceId(), config.getEnvName(), config.getKeyId(), config.getClientId(), config.getClientSecret(), 
-            		CpsConfiguration.asBooleanValue(config.getPassCredentialsAsHeaders()));
+            		CpsConfiguration.asBooleanValue(config.getPassCredentialsAsHeaders()), config.getAdditionalHeaders());
 
             //store in static config cache for further use.
             //StaticConfigCache.get().store(name, config, appConfig);

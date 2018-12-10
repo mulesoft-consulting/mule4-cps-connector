@@ -39,7 +39,7 @@ public class LocalFileDataProvider implements ApplicationDataProvider {
 	
 	@Override
 	public Map<String, Object> loadApplication(String projectName, String branchName, String instanceId, String envName,
-			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders) throws ConfigurationNotFoundException {
+			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws ConfigurationNotFoundException {
 
 		logger.info("Loading local file: {}", localFileName);
 		logger.info("Will attempt to load classpathResource {}", localFileName);
@@ -62,11 +62,11 @@ public class LocalFileDataProvider implements ApplicationDataProvider {
 
 	@Override
 	public ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName,
-			String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders) throws CpsException {
+			String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException {
 
 		ApplicationConfigurationBuilder builder = ApplicationConfiguration.builder();
 
-		Map<String, Object> app = loadApplication(projectName, branchName, instanceId, envName, keyId, null, null, false);
+		Map<String, Object> app = loadApplication(projectName, branchName, instanceId, envName, keyId, null, null, false, null);
 
 		builder.setProjectName(projectName).setBranchName(branchName).setInstanceId(instanceId).setEnvName(envName)
 				.setKeyId(keyId).setProperties((Map) app.get("properties"));

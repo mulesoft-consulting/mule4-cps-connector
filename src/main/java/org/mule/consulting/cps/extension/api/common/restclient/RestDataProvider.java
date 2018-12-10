@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Request;
 
 import org.glassfish.jersey.internal.util.Base64;
 import org.mule.consulting.cps.encryption.CpsEncryptor;
@@ -54,12 +56,12 @@ public class RestDataProvider implements ApplicationDataProvider {
 	@Override
 	public ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName,
 			String instanceId, String envName, String keyId, String clientId, String clientSecret,
-			boolean passCredentialsAsHeaders) throws CpsException {
+			boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException {
 
 		ApplicationConfigurationBuilder builder = ApplicationConfiguration.builder();
 
 		Map<String, Object> app = loadApplication(projectName, branchName, instanceId, envName, keyId, clientId,
-				clientSecret, passCredentialsAsHeaders);
+				clientSecret, passCredentialsAsHeaders, additionalHeaders);
 
 		builder.setProjectName(projectName).setBranchName(branchName).setInstanceId(instanceId).setEnvName(envName)
 				.setKeyId(keyId).setProperties((Map) app.get("properties"));
@@ -75,7 +77,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 			for (Map<String, String> importParent : imports) {
 				importList.add(loadApplicationConfiguration(importParent.get("projectName"),
 						importParent.get("branchName"), importParent.get("instanceId"), importParent.get("envName"),
-						importParent.get("keyId"), clientId, clientSecret, passCredentialsAsHeaders));
+						importParent.get("keyId"), clientId, clientSecret, passCredentialsAsHeaders, additionalHeaders));
 			}
 			builder.setImports(importList);
 		}
@@ -85,7 +87,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 
 	@Override
 	public Map<String, Object> loadApplication(String projectName, String branchName, String instanceId, String envName,
-			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders) throws CpsException {
+			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException {
 
 		boolean useAuthorizationHeader = !passCredentialsAsHeaders;
 		
@@ -98,6 +100,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 					.path(getValueOrProperty(branchName)).path(getValueOrProperty(instanceId))
 					.path(getValueOrProperty(envName)).path(getValueOrProperty(keyId));
 			logger.debug("WebTarget: " + target.getUri().toString());
+			logger.info("additional headers: " + additionalHeaders);
 
 			Response response = null;
 
@@ -107,6 +110,12 @@ public class RestDataProvider implements ApplicationDataProvider {
 			try {
 
 				int count = Integer.parseInt(countStr);
+				Builder request = target.request().accept(MediaType.APPLICATION_JSON);
+				if (additionalHeaders != null) {
+					for (Map.Entry<String, String> header: additionalHeaders.entrySet()) {
+						request.header(header.getKey(), header.getValue());
+					}
+				}
 				while (true) {
 					if (useAuthorizationHeader) {
 						StringBuilder aheader = new StringBuilder();
@@ -115,13 +124,12 @@ public class RestDataProvider implements ApplicationDataProvider {
 						String authString = Base64.encodeAsString(aheader.toString());
 						aheader = new StringBuilder();
 						aheader.append("Basic ").append(authString);
-						response = target.request().accept(MediaType.APPLICATION_JSON)
-								.header("Authorization", aheader.toString()).get();
+						request.header("Authorization", aheader.toString());
 					} else {
-						response = target.request().accept(MediaType.APPLICATION_JSON)
-								.header("client_id", getValueOrProperty(clientId))
-								.header("client_secret", getValueOrProperty(clientSecret)).get();
+						request.header("client_id", getValueOrProperty(clientId));
+						request.header("client_secret", getValueOrProperty(clientSecret));
 					}
+					response = request.get();
 					try {
 						if (response != null) {
 							statuscode = response.getStatus();
