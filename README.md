@@ -62,7 +62,7 @@ To configure the keystore, add these properties to either your server environmen
 	mule_cps_keystore_password=<password for the keystore file, the default is "">
 	mule_cps_key_password=<password for all the keys to be used, the default is "">
 ```
-Note for CloudHub, place the keystore in the src/main/resources directory and specify only the filename in the mule_cps_keystore_filename. The keystore file name can also be a url which returns the keystore file.
+Note for CloudHub, place the keystore in the src/main/resources directory and specify only the filename in the mule_cps_keystore_filename. The keystore file name can also be a url which returns the keystore file (for instance, ```mule_cps_keystore_filename=https://privatelibrary.mydomain.com/keystores/cps_keystore_latest.jks```).
 
 ##Associated REST Service Project
 The CPS REST service project can be found [here](https://github.com/mulesoft-consulting/mule4-cps-rest-service):
