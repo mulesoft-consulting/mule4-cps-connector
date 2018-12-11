@@ -16,6 +16,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<logger level="INFO" doc:name="Logger" doc:id="8c507c38-5123-421c-88e8-1063d3351155" 
 		  message='#["\nI am ${my.second.property} of ${parentage} globally: ${global.one} and defaulted ${myStdDefault:Is Default:)} ${example.project.property32:default}"]'/>
 	</flow>
+	
 	<flow name="test-mule4-cps-connectorFlow1" doc:id="837207cd-f9e9-4804-aa9d-ea49f68611df" >
 		<scheduler doc:name="Scheduler" doc:id="032f342e-217a-47db-bcc1-efe574f77311" >
 			<scheduling-strategy >

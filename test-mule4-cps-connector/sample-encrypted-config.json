@@ -1,0 +1,22 @@
+{
+  "projectName" : "test-mule4-cps-connector",
+  "branchName" : "base",
+  "instanceId" : "base",
+  "keyId" : "key1",
+  "envName" : "DEV",
+  "imports" : [ {
+    "projectName" : "Shared",
+    "branchName" : "base",
+    "instanceId" : "base",
+    "keyId" : "base",
+    "envName" : "DEV"
+  } ],
+  "properties" : {
+    "secure.properties" : "cipher.text.properties,another.property",
+    "a.b.c" : "myvalue",
+    "my.second.property" : "test-mule4-cps-connector base base DEV key1",
+    "another.property" : "![vuD+qNpC0IpF1TNOyzkMJxNWZEF1mvy8n10hfQHHo6I=]",
+    "cipher.text.properties" : "![dBDm2q58ajx59hPaFvot1eQ7aIahOMPRvdxmyRPECJk=]"
+  },
+  "cipherKey" : "3175ecab6b76c082139879809042bf9b984c9269c3ad0d6ecfc0eb9bc300570f8ec89de3f12bf35f666e407d53573b7a0084f829a044d5efc87cd4982f1028f71f64e00993eaab5bfcb25b90c351426ca996d082f6d5860eed3cf558c1a9fcef0d407a809fab4b623d760c7e224cacaaec35b486a289fc0b969a22305d02a5a25f7725189ac452ced46f0784a1992dae00201bceb86f7bdf7294adcc92d4f49372a44504c4f3bad94e797fb3f9f41bb5d06774c42d7456d0f18b056a1361fad9a073c918f5a9ff969eeed0f4868d42f6e19f865d8ff71e630ca34f272349d75f2586cf83c0aad4788ae9e166458918b9c0638fd662d461e97c00958740fda63d9b5b51a6b951d635556feb35d4a8d0744265d68de7442684c6b88d9312e01f60d559087bdfc975e17afdf7370583e472b478eac719d352b3c02ce5a05a2d442ea9ebfa13fcf7621ddbce6ce398a4173d838174ccb8b95543dae336504dd683a17817c9aec543ca79f5e54b1f011ada095d9821f3db7f3169dfd13cb76f7ff5887db5993111b9aeff02a0ebaaa38d87c7d33e78aa605996c18fb186fee3a6085e740c5b51aaebcb863546b3389d5617a265ae0e358db743566ab90fc5d39578a40728c26d55a69b7ab49c300a09b09690b8c7adc456e4cd5c0e409ed37bddb95eea3b4cb1f9c4e64bf333c5561a62c7300f89e3c1230551817099a339cc737684"
+}
