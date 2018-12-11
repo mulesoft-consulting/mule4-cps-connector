@@ -1,6 +1,6 @@
 # Configuration-properties-service Extension
 
-This is a connector to the CPS configuration property service. The CPS is an application that stores configs. The application runs in a Mule Runtime. Each config is stored under its own key, in a persisted Mule Object Store. 
+This is a Mule 4 connector to the CPS configuration property service. The CPS is an application that stores configs. The application runs in a Mule Runtime. Each config is stored under its own key, in a persisted Mule Object Store. 
 
 A REST API is provided to allow the configuration property service connector to retrieve (GET) a config and its imports from the service. In addition, several other methods and resources are provided to help manage the configs.
 
@@ -62,7 +62,7 @@ To configure the keystore, add these properties to either your server environmen
 	mule_cps_keystore_password=<password for the keystore file, the default is "">
 	mule_cps_key_password=<password for all the keys to be used, the default is "">
 ```
-Note for CloudHub, place the keystore in the src/main/resources directory and specify only the filename in the mule_cps_keystore_filename.
+Note for CloudHub, place the keystore in the src/main/resources directory and specify only the filename in the mule_cps_keystore_filename. The keystore file name can also be a url which returns the keystore file.
 
 ##Associated REST Service Project
 The CPS REST service project can be found [here](https://github.com/mulesoft-consulting/mule4-cps-rest-service):
@@ -72,5 +72,7 @@ The CPS REST service project can be found [here](https://github.com/mulesoft-con
 This error will occur if the Java Cryptography Extension (JCE) Unlimited Strength is not installed in your Java JRE (lib/security) directory. Do an Internet search to find where to download this set of libraries.
 
 ## Versions
+
+Orginal project is: https://github.com/mulesoft-consulting/mule4-cps-connector
 
 1.0.3 peter dunworth -Add additional headers into call to cps rest service, allows calls to RTF deployed cps
