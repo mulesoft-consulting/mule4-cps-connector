@@ -268,7 +268,7 @@ public class RestDataProvider implements ApplicationDataProvider {
         }
 
         if (is == null) {
-        	this.getClass().getClassLoader().getResourceAsStream(resourceName);
+        	is = this.getClass().getClassLoader().getResourceAsStream(resourceName);
         }
 
         if (is == null) {
