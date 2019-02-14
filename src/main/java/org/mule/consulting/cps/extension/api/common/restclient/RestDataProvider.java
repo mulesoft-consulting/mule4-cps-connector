@@ -319,12 +319,13 @@ public class RestDataProvider implements ApplicationDataProvider {
 						logger.warn("Using System Variable PEM: " + e.toString());
 						File pkcs8File = new File(keyId + ".pkcs8");
 						if (!pkcs8File.exists() || !pkcs8File.isFile()) {
-							String msg = "Need the file " + pkcs8File.getAbsolutePath()
-									+ " to be present, cannot continue with decrypt";
-							logger.error(msg);
-							throw new Exception(msg);
+							String msg = "Missing the file " + pkcs8File.getAbsolutePath()
+									+ " will try classpath";
+							logger.warn(msg);
+							privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(keyId + ".pkcs8");
+						} else {
+							privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(pkcs8File.getAbsolutePath());
 						}
-						privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(pkcs8File.getAbsolutePath());
 					}
 					cpsEncryptor = new CpsEncryptor(privateKey, cipherKey);
 				} else {
