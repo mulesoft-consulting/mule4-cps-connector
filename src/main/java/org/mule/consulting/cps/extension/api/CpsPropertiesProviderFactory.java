@@ -59,6 +59,7 @@ public class CpsPropertiesProviderFactory implements ConfigurationPropertiesProv
             String clientId = parameters.getStringParameter("clientId");
             String clientSecret = parameters.getStringParameter("clientSecret");
             String passCredentialsAsHeaders = getOptionalStringParemeter(parameters, "passCredentialsAsHeaders");
+            String usePEM = getOptionalStringParemeter(parameters, "usePEM");
 
 
             Map<String, String> headers = new LinkedHashMap<>();
@@ -100,12 +101,14 @@ public class CpsPropertiesProviderFactory implements ConfigurationPropertiesProv
             config.setClientSecret(clientSecret);
             config.setPassCredentialsAsHeaders(passCredentialsAsHeaders);
             config.setAdditionalHeaders(headers);
+            config.setUsePEM(usePEM);
 
             ApplicationDataProvider provider = ApplicationDataProvider.factory.newApplicationDataProvider(config);
 
             ApplicationConfiguration appConfig = provider.loadApplicationConfiguration(config.getProjectName(),config.getBranchName(),
             		config.getInstanceId(), config.getEnvName(), config.getKeyId(), config.getClientId(), config.getClientSecret(), 
-            		CpsConfiguration.asBooleanValue(config.getPassCredentialsAsHeaders()), config.getAdditionalHeaders());
+            		CpsConfiguration.asBooleanValue(config.getPassCredentialsAsHeaders()), config.getAdditionalHeaders(),
+            		CpsConfiguration.asBooleanValue(config.getUsePEM()));
 
             //store in static config cache for further use.
             //StaticConfigCache.get().store(name, config, appConfig);

@@ -95,6 +95,13 @@ public class CpsConfiguration {
     @Summary("Additional headers to send.")
     private Map<String, String> additionalHeaders;
 
+	@Parameter
+	@Optional(defaultValue = "false")
+	@Placement(order = 12)
+	@Summary("Use PEM files for decryption keys.")
+	@Example("false")
+	private String usePEM;
+
 	public String getConfigId() {
 		return configId;
 	}
@@ -141,6 +148,10 @@ public class CpsConfiguration {
 
 	public Map<String, String> getAdditionalHeaders() {
 		return additionalHeaders;
+	}
+
+	public String getUsePEM() {
+		return usePEM;
 	}
 
 	public void setConfigId(String configId) {
@@ -191,23 +202,23 @@ public class CpsConfiguration {
 		this.additionalHeaders = additionalHeaders;
 	}
 
+	public void setUsePEM(String usePEM) {
+		this.usePEM = usePEM;
+	}
+
 	public static boolean asBooleanValue(String booleanValueAsString) {
-		logger.debug("baseUrlIsInsecureSSL:" + booleanValueAsString);
 		String value = null;
 		try {
 			if (booleanValueAsString == null) {
-				logger.debug("booleanValueAsString: false");
 				return false;
 			} else if (booleanValueAsString.startsWith("${")) {
 				String systemProperty = booleanValueAsString.substring(2, booleanValueAsString.length() - 1);
 				value = System.getProperty(systemProperty);
-				logger.debug("booleanValueAsString: " + value);
 			} else {
 				value = booleanValueAsString;
 			}
 
 			if (value != null) {
-				logger.debug("booleanValueAsString: " + value);
 				if (value.trim().toLowerCase().equals("true"))
 					return true;
 				if (value.trim().toLowerCase().equals("yes"))
@@ -218,11 +229,9 @@ public class CpsConfiguration {
 					return true;
 				return false;
 			} else {
-				logger.debug("booleanValueAsString: false due to null value");
 				return false;
 			}
 		} catch (Exception e) {
-			logger.debug("booleanValueAsString: false due to exception");
 			return false;
 		}
 	}

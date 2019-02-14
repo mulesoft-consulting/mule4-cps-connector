@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.cps</groupId>
 	<artifactId>cps-connector</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<packaging>mule-extension</packaging>
 	<name>Configuration-properties-service (CPS) Extension</name>
 
@@ -121,7 +121,7 @@
 		<dependency>
 			<groupId>org.mule.consulting</groupId>
 			<artifactId>mule4-cps-encryption</artifactId>
-			<version>1.1.2</version>
+			<version>1.1.3</version>
 		</dependency>
 	</dependencies>
 

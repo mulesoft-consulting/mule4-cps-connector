@@ -11,7 +11,7 @@ To use the CPS connector in a Mule project, add this dependency to your applicat
 			<groupId>org.mule.cps</groupId>
 			<artifactId>cps-connector</artifactId>
 			<classifier>mule-plugin</classifier>
-			<version>1.0.1</version>
+			<version>1.0.5</version>
 		</dependency>
 ```
 Then add the Global Configuration-property-service Config element to your project's config.xml file. The XML looks like this:
@@ -65,7 +65,11 @@ To configure the keystore, add these properties to either your server environmen
 Note for CloudHub, place the keystore in the src/main/resources directory and specify only the filename in the mule_cps_keystore_filename. The keystore file name can also be a url which returns the keystore file (for instance, ```mule_cps_keystore_filename=https://privatelibrary.mydomain.com/keystores/cps_keystore_latest.jks```).
 
 ##Associated REST Service Project
-The CPS REST service project can be found [here](https://github.com/mulesoft-consulting/mule4-cps-rest-service):
+The CPS REST service project can be found [here](https://github.com/mulesoft-consulting/mule4-cps-rest-service)
+
+## PKCS8 PEM File for Deployment Injection of Decryption Key
+
+The use PEM flag can be set to "true" which will case the decryption to look for a system property with the same name as the keyId. The systemp property must be an unencrypted PKCS8 PEM format. This is useful for injecting the decryption key into the system properties during deployment. If the system property is not found, the a file named <keyId>.pkcs8 will be opened. The file contains an unencrypted PKCS8 PEM format. If neither form of PEM is found, no properties are decrypted.
 
 ## Invalid Key Size Error During Encryption or Decryption
 
@@ -76,3 +80,4 @@ This error will occur if the Java Cryptography Extension (JCE) Unlimited Strengt
 Orginal project is: https://github.com/mulesoft-consulting/mule4-cps-connector
 
 1.0.3 peter dunworth -Add additional headers into call to cps rest service, allows calls to RTF deployed cps
+1.0.5 peter dunworth -Add support for PKCS8 decryption keys.

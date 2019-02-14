@@ -1,7 +1,9 @@
 package org.mule.consulting.cps.extension.api.common.restclient;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +19,7 @@ import javax.ws.rs.core.Request;
 
 import org.glassfish.jersey.internal.util.Base64;
 import org.mule.consulting.cps.encryption.CpsEncryptor;
+import org.mule.consulting.cps.encryption.KeyStoreHelper;
 import org.mule.consulting.cps.extension.api.common.ApplicationConfiguration;
 import org.mule.consulting.cps.extension.api.common.ApplicationConfigurationBuilder;
 import org.mule.consulting.cps.extension.api.common.ApplicationDataProvider;
@@ -56,12 +59,12 @@ public class RestDataProvider implements ApplicationDataProvider {
 	@Override
 	public ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName,
 			String instanceId, String envName, String keyId, String clientId, String clientSecret,
-			boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException {
+			boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders, boolean usePEM) throws CpsException {
 
 		ApplicationConfigurationBuilder builder = ApplicationConfiguration.builder();
 
 		Map<String, Object> app = loadApplication(projectName, branchName, instanceId, envName, keyId, clientId,
-				clientSecret, passCredentialsAsHeaders, additionalHeaders);
+				clientSecret, passCredentialsAsHeaders, additionalHeaders, usePEM);
 
 		builder.setProjectName(projectName).setBranchName(branchName).setInstanceId(instanceId).setEnvName(envName)
 				.setKeyId(keyId).setProperties((Map) app.get("properties"));
@@ -77,7 +80,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 			for (Map<String, String> importParent : imports) {
 				importList.add(loadApplicationConfiguration(importParent.get("projectName"),
 						importParent.get("branchName"), importParent.get("instanceId"), importParent.get("envName"),
-						importParent.get("keyId"), clientId, clientSecret, passCredentialsAsHeaders, additionalHeaders));
+						importParent.get("keyId"), clientId, clientSecret, passCredentialsAsHeaders, additionalHeaders, usePEM));
 			}
 			builder.setImports(importList);
 		}
@@ -87,7 +90,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 
 	@Override
 	public Map<String, Object> loadApplication(String projectName, String branchName, String instanceId, String envName,
-			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException {
+			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders, boolean usePEM) throws CpsException {
 
 		boolean useAuthorizationHeader = !passCredentialsAsHeaders;
 		
@@ -196,7 +199,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 			logger.warn("No configuration property server configured.");
 		}
 
-		decryptProperties(result);
+		decryptProperties(result, usePEM);
 		return result;
 
 	}
@@ -279,7 +282,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 
     }
 
-	private void decryptProperties(Map<String, Object> payload) {
+	private void decryptProperties(Map<String, Object> payload, boolean usePEM) {
 
 		String keyId = (String) payload.get("keyId");
 		String cipherKey = (String) payload.get("cipherKey");
@@ -307,7 +310,27 @@ public class RestDataProvider implements ApplicationDataProvider {
 
 		try {
 			if (decryptRequired) {
-				CpsEncryptor cpsEncryptor = new CpsEncryptor(keyId, cipherKey);
+				CpsEncryptor cpsEncryptor = null;
+				if (usePEM) {
+					PrivateKey privateKey = null;
+					try {
+						privateKey = KeyStoreHelper.getPrivateKeyFromSystemVariable(keyId);
+					} catch (Exception e) {
+						logger.warn("Using System Variable PEM: " + e.toString());
+						File pkcs8File = new File(keyId + ".pkcs8");
+						if (!pkcs8File.exists() || !pkcs8File.isFile()) {
+							String msg = "Need the file " + pkcs8File.getAbsolutePath()
+									+ " to be present, cannot continue with decrypt";
+							logger.error(msg);
+							throw new Exception(msg);
+						}
+						privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(pkcs8File.getAbsolutePath());
+					}
+					cpsEncryptor = new CpsEncryptor(privateKey, cipherKey);
+				} else {
+					cpsEncryptor = new CpsEncryptor(keyId, cipherKey);
+				}
+
 				for (String key : properties.keySet()) {
 					String encryptedValue = properties.get(key);
 					String value = cpsEncryptor.decrypt(encryptedValue);

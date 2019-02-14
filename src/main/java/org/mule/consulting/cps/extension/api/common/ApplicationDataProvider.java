@@ -23,9 +23,9 @@ public interface ApplicationDataProvider {
      * @return
      * @throws ConfigurationServiceException
      */
-    ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName, String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders) throws CpsException;
+    ApplicationConfiguration loadApplicationConfiguration(String projectName, String branchName, String instanceId, String envName, String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders, Map<String, String> additionalHeaders, boolean usePEM) throws CpsException;
 
 	Map<String, Object> loadApplication(String projectName, String branchName, String instanceId, String envName,
 			String keyId, String clientId, String clientSecret, boolean passCredentialsAsHeaders,
-			Map<String, String> additionalHeaders) throws CpsException;
+			Map<String, String> additionalHeaders, boolean usePEM) throws CpsException;
 }
