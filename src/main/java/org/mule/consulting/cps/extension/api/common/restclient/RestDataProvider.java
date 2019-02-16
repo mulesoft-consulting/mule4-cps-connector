@@ -315,16 +315,16 @@ public class RestDataProvider implements ApplicationDataProvider {
 					PrivateKey privateKey = null;
 					try {
 						privateKey = KeyStoreHelper.getPrivateKeyFromSystemVariable(keyId);
+						System.err.println("Using System Variable PEM");
 					} catch (Exception e) {
-						logger.warn("Using System Variable PEM: " + e.toString());
 						File pkcs8File = new File(keyId + ".pkcs8");
 						if (!pkcs8File.exists() || !pkcs8File.isFile()) {
-							String msg = "Missing the file " + pkcs8File.getAbsolutePath()
-									+ " will try classpath";
-							logger.warn(msg);
-							privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(keyId + ".pkcs8");
+							String pkcs8FileName = keyId + ".pkcs8";
+							privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(pkcs8FileName);
+							System.err.println("Using CLASSPATH for " + pkcs8FileName);
 						} else {
 							privateKey = KeyStoreHelper.getPrivateKeyFromPkcsFile(pkcs8File.getAbsolutePath());
+							System.err.println("Using PEM file " + pkcs8File.getAbsolutePath());
 						}
 					}
 					cpsEncryptor = new CpsEncryptor(privateKey, cipherKey);
@@ -339,7 +339,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Decryption of properties failed");
+			System.out.println("CPS connector decryption of properties failed, check decryption key configuration for " + keyId);
 			e.printStackTrace();
 			return;
 		}
