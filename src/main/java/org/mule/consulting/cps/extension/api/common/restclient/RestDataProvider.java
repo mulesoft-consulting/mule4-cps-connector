@@ -97,7 +97,7 @@ public class RestDataProvider implements ApplicationDataProvider {
 		// read it as a java map
 		Map<String, Object> result = null;
 		String serverUri = getValueOrProperty(config.getConfigServerBaseUrl());
-		if (serverUri != null && (serverUri.trim().length() > 0 && !serverUri.startsWith("${"))) {
+		if (serverUri != null && (serverUri.trim().length() > 0 && !serverUri.startsWith("${") && !serverUri.equalsIgnoreCase("https://"))) {
 			
 			WebTarget target = restClient.target(serverUri).path(getValueOrProperty(projectName))
 					.path(getValueOrProperty(branchName)).path(getValueOrProperty(instanceId))
